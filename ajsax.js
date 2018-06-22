@@ -36,7 +36,22 @@ AjSax.perform = function(url, method, data, onSuccess, onFailure) {
   }).perform(data);
 }
 
+AjSax.Query = function(object) {
+  this.object = object;
+  this.toString = function() {
+    var query = '?'
+    for (var key in this.object) {
+      query += key + "=" + encodeURIComponent(this.object[key]) + "&";
+    }
+    return query.slice(0, -1)
+  }
+}
+
 AjSax.post = function(url, d, s, f) { AjSax.perform(url, 'POST', d, s, f); }
 AjSax.put = function(url, d, s, f) { AjSax.perform(url, 'PUT', d, s, f); }
-AjSax.get = function(url, d, s, f) { AjSax.perform(url, 'GET', d, s, f); }
 AjSax.delete = function(url, d, s, f) { AjSax.perform(url, 'DELETE', d, s, f); }
+AjSax.get = function(url, d, s, f) {
+  url = url + new AjSax.Query(d);
+  AjSax.perform(url, 'GET', null, s, f);
+}
+
