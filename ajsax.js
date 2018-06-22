@@ -27,38 +27,16 @@ AjSax.Request = function(options) {
   }
 }
 
-AjSax.post = function(url, data, onSuccess, onFailure) {
+AjSax.perform = function(url, method, data, onSuccess, onFailure) {
   new AjSax.Request({
     URL: url,
-    method: 'POST',
+    method: method,
     onSuccess: onSuccess,
     onFailure: onFailure
   }).perform(data);
 }
 
-AjSax.put = function(url, data, onSuccess, onFailure) {
-  new AjSax.Request({
-    URL: url,
-    method: 'PUT',
-    onSuccess: onSuccess,
-    onFailure: onFailure
-  }).perform(data);
-}
-
-AjSax.get = function(url, data, onSuccess, onFailure) {
-  new AjSax.Request({
-    URL: url,
-    method: 'GET',
-    onSuccess: onSuccess,
-    onFailure: onFailure
-  }).perform(data);
-}
-
-AjSax.delete = function(url, data, onSuccess, onFailure) {
-  new AjSax.Request({
-    URL: url,
-    method: 'DELETE',
-    onSuccess: onSuccess,
-    onFailure: onFailure
-  }).perform(data);
-}
+AjSax.post = function(url, d, s, f) { AjSax.perform(url, 'POST', d, s, f); }
+AjSax.put = function(url, d, s, f) { AjSax.perform(url, 'PUT', d, s, f); }
+AjSax.get = function(url, d, s, f) { AjSax.perform(url, 'GET', d, s, f); }
+AjSax.delete = function(url, d, s, f) { AjSax.perform(url, 'DELETE', d, s, f); }
