@@ -1,4 +1,6 @@
-var Request = function(options) {
+var AjSax = function() {};
+
+AjSax.Request = function(options) {
   this.options = options;
   this.xhr = new XMLHttpRequest();
 
@@ -23,4 +25,40 @@ var Request = function(options) {
     if (!options[name]) { return; }
     options[name](data);
   }
+}
+
+AjSax.post = function(url, data, onSuccess, onFailure) {
+  new AjSax.Request({
+    URL: url,
+    method: 'POST',
+    onSuccess: onSuccess,
+    onFailure: onFailure
+  }).perform(data);
+}
+
+AjSax.put = function(url, data, onSuccess, onFailure) {
+  new AjSax.Request({
+    URL: url,
+    method: 'PUT',
+    onSuccess: onSuccess,
+    onFailure: onFailure
+  }).perform(data);
+}
+
+AjSax.get = function(url, data, onSuccess, onFailure) {
+  new AjSax.Request({
+    URL: url,
+    method: 'GET',
+    onSuccess: onSuccess,
+    onFailure: onFailure
+  }).perform(data);
+}
+
+AjSax.delete = function(url, data, onSuccess, onFailure) {
+  new AjSax.Request({
+    URL: url,
+    method: 'DELETE',
+    onSuccess: onSuccess,
+    onFailure: onFailure
+  }).perform(data);
 }

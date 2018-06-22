@@ -6,20 +6,20 @@ for performing the basic HTTP methods asyncrhonously.
 
 ### POST
 ```javascript
-AjSax.post({ my_key: 'my_data' }, onSuccess, onFailure, options)
+AjSax.post('http://example.com', { my_key: 'my_data' }, onSuccess, onFailure)
 ```
 
 ### PUT
 ```javascript
-AjSax.put({ my_key: 'my_data' }, onSuccess, onFailure, options)
+AjSax.put('http://example.com', { my_key: 'my_data' }, onSuccess, onFailure)
 ```
 
 ### GET
 ```javascript
-AjSax.get({ my_key: 'my_data' }, onSuccess, onFailure, options)
+AjSax.get('http://example.com', { my_key: 'my_data' }, onSuccess, onFailure)
 ```
 
 ### DELETE
 ```javascript
-AjSax.delete({ my_key: 'my_data' }, onSuccess, onFailure, options)
+AjSax.delete('http://example.com', { my_key: 'my_data' }, onSuccess, onFailure)
 ```
