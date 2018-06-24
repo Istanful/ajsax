@@ -1,6 +1,9 @@
 # AjSax
 A simple javascript library that provides methods for performing the basic HTTP methods asynchronously. "Aj, Sax!" means "Ouch, Scissors!" in swedish. This is fun because it sounds like AJAX.
 
+## Installation
+Download the (script)[https://raw.githubusercontent.com/Istanful/ajsax/master/ajsax.js], include it in your project, and you're done!
+
 ## Usage
 Example:
 ```javascript
