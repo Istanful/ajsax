@@ -35,7 +35,7 @@ AjSax.Request = function(url, method, options) {
 
   this.performCallback = function(callback) {
     if (!callback) { return; }
-    callback(this.parsedData());
+    callback(this.parsedData(), this.xhr.status);
   }
 
   this.isPerforming = function() { return this.xhr.readyState != 4; }
