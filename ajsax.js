@@ -45,11 +45,11 @@ AjSax.Request = function(url, method, options) {
 AjSax.Query = function(object) {
   this.object = object;
   this.toString = function() {
-    var query = '?'
+    var query = '?';
     for (var key in this.object) {
       query += key + "=" + encodeURIComponent(this.object[key]) + "&";
     }
-    return query.slice(0, -1)
+    return query.slice(0, -1);
   }
 }
 
