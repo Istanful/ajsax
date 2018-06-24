@@ -1,25 +1,39 @@
 # AjSax
 A simple javascript library that provides methods
-for performing the basic HTTP methods asyncrhonously.
+for performing the basic HTTP methods asynchronously.
 
-## Methods
+"Aj, Sax!" means "Ouch, Scissors!" in swedish.
+This is fun because it sounds like AJAX.
 
-### POST
+## Usage
+Example:
 ```javascript
-AjSax.post('http://example.com', { my_key: 'my_data' }, onSuccess, onFailure)
+AjSax.post('http://example.com', {
+  data: { scissors: "Don't run!" },
+  headers: { Accept: 'application/json' }
+}, function(data, status) {
+  console.log('Warning sent successfully!');
+}, function(data, status) {
+  console.log('Could not send warning. Try again!');
+});
 ```
 
-### PUT
+Any request is performed with the signature `AjSax.<method>`.
+
 ```javascript
-AjSax.put('http://example.com', { my_key: 'my_data' }, onSuccess, onFailure)
+AjSax.post(url, options, onSuccess, onFailure);
 ```
 
-### GET
-```javascript
-AjSax.get('http://example.com', { my_key: 'my_data' }, onSuccess, onFailure)
-```
+Each method accepts four arguments:
+- The `url` to request.
 
-### DELETE
-```javascript
-AjSax.delete('http://example.com', { my_key: 'my_data' }, onSuccess, onFailure)
-```
+- `options` to modify the request. The following options are available:
+    - The HTTP `headers` to be set. Expressed as objects: `{ Accept: 'application/json' }`
+    - The form `data` to be sent. Expressed as objects and encoded as JSON.
+    - The query `args` to be sent. Expressed as objects and appended to the `url`.
+
+- `onSuccess` should be a function to be called when the response is successful.
+  Will be passed the parsed data as well as the status code.
+
+- `onFailure` should be a function to be called when the response is successful.
+  Will be passed the parsed data as well as the status code.
