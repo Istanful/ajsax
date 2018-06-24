@@ -1,39 +1,45 @@
 var AjSax = function() {};
 
-AjSax.Request = function(options) {
+AjSax.Request = function(url, method, options) {
+  this.url = url.toString();
+  this.method = method;
   this.options = options;
   this.xhr = new XMLHttpRequest();
 
-  this.isPerforming = function() { return this.xhr.readyState != 4; }
-  this.isSuccess = function() { return this.xhr.status == 200; }
-
-  this.handleResponse = function() {
-    if (this.isPerforming()) { return; }
-    var data = JSON.parse(this.xhr.responseText);
-    if (this.isSuccess()) { return this.performCallback('onSuccess', data); }
-    return this.performCallback('onFailure', data);
-  }
-
-  this.perform = function(data) {
+  this.perform = function(data, onSuccess, onFailure) {
     var that = this;
-    this.xhr.open(options['method'], options['URL'], true);
-    this.xhr.onreadystatechange = function() { that.handleResponse(); }
+    this.xhr.open(this.method, this.url, true);
+    this.setHeaders();
+    this.xhr.onreadystatechange = function() {
+      that.onStateChanged(onSuccess, onFailure);
+    }
     this.xhr.send(JSON.stringify(data));
   }
 
-  this.performCallback = function(name, data) {
-    if (!options[name]) { return; }
-    options[name](data);
+  this.onStateChanged = function(onSuccess, onFailure) {
+    if (this.isPerforming()) { return; }
+    if (this.isSuccess()) { return this.performCallback(onSuccess); }
+    return this.performCallback(onFailure);
   }
-}
 
-AjSax.perform = function(url, method, data, onSuccess, onFailure) {
-  new AjSax.Request({
-    URL: url,
-    method: method,
-    onSuccess: onSuccess,
-    onFailure: onFailure
-  }).perform(data);
+  this.parsedData = function() {
+    try { return JSON.parse(this.xhr.responseText); }
+    catch { return this.xhr.responseText; }
+  }
+
+  this.setHeaders = function() {
+    for (var key in this.options.headers) {
+      this.xhr.setRequestHeader(key, this.options.headers[key]);
+    }
+  }
+
+  this.performCallback = function(callback) {
+    if (!callback) { return; }
+    callback(this.parsedData());
+  }
+
+  this.isPerforming = function() { return this.xhr.readyState != 4; }
+  this.isSuccess = function() { return this.xhr.status == 200; }
 }
 
 AjSax.Query = function(object) {
@@ -47,11 +53,32 @@ AjSax.Query = function(object) {
   }
 }
 
-AjSax.post = function(url, d, s, f) { AjSax.perform(url, 'POST', d, s, f); }
-AjSax.put = function(url, d, s, f) { AjSax.perform(url, 'PUT', d, s, f); }
-AjSax.delete = function(url, d, s, f) { AjSax.perform(url, 'DELETE', d, s, f); }
-AjSax.get = function(url, d, s, f) {
-  url = url + new AjSax.Query(d);
-  AjSax.perform(url, 'GET', null, s, f);
+AjSax.Url = function(url, args) {
+  this.url = url;
+  this.args = args;
+
+  this.toString = function() {
+    return url + new AjSax.Query(this.args);
+  }
 }
 
+AjSax.perform = function(url, method, options, onSuccess, onFailure) {
+  new AjSax.Request(new AjSax.Url(url, options['args']), 'POST', options)
+           .perform(options['data'], onSuccess, onFailure);
+}
+
+AjSax.post = function(url, opts, success, failure) {
+  AjSax.perform(url, 'POST', opts, success, failure);
+}
+
+AjSax.put = function(url, opts, success, failure) {
+  AjSax.perform(url, 'POST', opts, success, failure);
+}
+
+AjSax.get = function(url, opts, success, failure) {
+  AjSax.perform(url, 'GET', opts, success, failure);
+}
+
+AjSax.delete = function(url, opts, success, failure) {
+  AjSax.perform(url, 'DELETE', opts, success, failure);
+}
