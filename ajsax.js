@@ -63,7 +63,7 @@ AjSax.Url = function(url, args) {
 }
 
 AjSax.perform = function(url, method, options, onSuccess, onFailure) {
-  new AjSax.Request(new AjSax.Url(url, options['args']), 'POST', options)
+  new AjSax.Request(new AjSax.Url(url, options['args']), method, options)
            .perform(options['data'], onSuccess, onFailure);
 }
 
